@@ -39,6 +39,11 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 
+# Fallback routers for Vercel experimentalServices if routePrefix is not stripped
+app.include_router(auth.router, prefix="/_/backend/api/auth", tags=["auth_vercel"])
+app.include_router(documents.router, prefix="/_/backend/api/documents", tags=["documents_vercel"])
+app.include_router(chat.router, prefix="/_/backend/api/chat", tags=["chat_vercel"])
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to RAG Chatbot API using FastAPI, MongoDB Atlas, and Gemini"}
