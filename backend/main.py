@@ -2,10 +2,10 @@ import os
 import sys
 import json
 
-# Add project root to sys.path so 'backend' package is recognized
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
+# Add current directory to sys.path so packages like 'routers' are recognized
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 load_dotenv(env_path, override=True)
 
-from backend.routers import documents, chat, auth
+from routers import documents, chat, auth
 
 app = FastAPI(title="RAG Chatbot API")
 
