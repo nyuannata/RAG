@@ -233,7 +233,7 @@ export default function DashboardPage() {
       { role: "user", content: currentQuery, created_at: new Date().toISOString() }
     ]);
 
-    const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const baseURL = process.env.NEXT_PUBLIC_API_URL || "/_/backend";
     
     try {
       const response = await fetch(`${baseURL}/api/chat/sessions/${activeSessionId}/stream`, {

@@ -9,7 +9,15 @@ const nextConfig: NextConfig = {
   typescript: {
     // Allow production builds to complete even with minor compiler strictness issues if any.
     ignoreBuildErrors: true,
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/_/backend/:path*",
+        destination: "http://localhost:8000/:path*", // Proxy to Backend
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create configured Axios instance pointing to the FastAPI backend API gateway
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "/_/backend",
   headers: {
     "Content-Type": "application/json",
   },
