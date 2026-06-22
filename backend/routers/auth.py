@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from bson import ObjectId
-from ..database import get_db
-from ..models import UserRegister, UserLogin, UserResponse, Token
-from ..security import get_password_hash, verify_password, create_access_token, get_current_user_id
+from backend.database import get_db
+from backend.models import UserRegister, UserLogin, UserResponse, Token
+from backend.security import get_password_hash, verify_password, create_access_token, get_current_user_id
 
 router = APIRouter()
 

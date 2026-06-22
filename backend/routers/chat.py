@@ -4,9 +4,9 @@ from fastapi.responses import StreamingResponse
 from bson import ObjectId
 from datetime import datetime
 from typing import List, Optional
-from ..database import get_db
-from ..models import ChatSessionCreate, ChatSessionResponse, ChatMessageStreamRequest, ChatMessageResponse, Citation, CitationList
-from ..llm import get_embedding, get_chat_model
+from backend.database import get_db
+from backend.models import ChatSessionCreate, ChatSessionResponse, ChatMessageStreamRequest, ChatMessageResponse, Citation, CitationList
+from backend.llm import get_embedding, get_chat_model
 
 router = APIRouter()
 

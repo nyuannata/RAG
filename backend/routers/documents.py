@@ -3,9 +3,9 @@ import io
 from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
 from bson import ObjectId
 from typing import List
-from ..database import get_db
-from ..models import DocumentResponse
-from ..llm import get_embedding
+from backend.database import get_db
+from backend.models import DocumentResponse
+from backend.llm import get_embedding
 from pypdf import PdfReader
 from docx import Document as DocxDocument
 
