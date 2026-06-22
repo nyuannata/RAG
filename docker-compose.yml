@@ -1,0 +1,72 @@
+
+
+services:
+  # Database Service (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: rag_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_chatbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend Service (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag_backend
+    restart: always
+    environment:
+      - PROJECT_NAME=RAG Chatbot Dokumen Perusahaan
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/rag_chatbot
+      - JWT_SECRET=supersecretjwtkeychangeinproduction12345!@#$
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CHROMA_PERSIST_DIRECTORY=/workspace/chroma_db
+      - UPLOAD_DIR=/workspace/uploads
+      - BACKEND_CORS_ORIGINS=["http://localhost:3000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/workspace/chroma_db
+      - uploads_data:/workspace/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Frontend Service (Next.js 15 Standalone)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+    driver: local
+  chroma_data:
+    driver: local
+  uploads_data:
+    driver: local

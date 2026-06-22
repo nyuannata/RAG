@@ -1,0 +1,42 @@
+PANDUAN MENJALANKAN ULANG APLIKASI RAG CHATBOT
+==============================================
+
+Untuk menjalankan aplikasi ini di lain waktu, Anda harus membuka 2 (dua) terminal/Command Prompt secara terpisah. Satu untuk backend (API/Database) dan satu lagi untuk frontend (Tampilan Web).
+
+Sebelum mulai, pastikan aplikasi PostgreSQL sudah berjalan di komputer Anda.
+
+----------------------------------------------
+TERMINAL 1: MENJALANKAN BACKEND (PYTHON & API)
+----------------------------------------------
+1. Buka Terminal / Command Prompt baru.
+2. Masuk ke folder backend proyek Anda:
+   cd "f:\RAG chatbot dokumen\backend"
+3. Aktifkan lingkungan virtual Python (virtual environment):
+   ..\.venv\Scripts\activate
+4. Jalankan server:
+   python -m app.main
+
+(Biarkan jendela terminal ini tetap terbuka)
+
+
+----------------------------------------------
+TERMINAL 2: MENJALANKAN FRONTEND (TAMPILAN WEB)
+----------------------------------------------
+1. Buka Terminal / Command Prompt baru.
+2. Masuk ke folder frontend:
+   cd "f:\RAG chatbot dokumen\frontend"
+3. Jalankan server web:
+   npm run dev
+
+(Biarkan jendela terminal ini tetap terbuka)
+
+
+----------------------------------------------
+LANGKAH TERAKHIR
+----------------------------------------------
+Setelah kedua terminal di atas berjalan tanpa error, Anda bisa membuka browser (Chrome/Edge/Firefox) dan mengakses alamat berikut:
+
+http://localhost:3000
+
+Selamat menggunakan aplikasi RAG Chatbot Anda!
+Untuk mematikan aplikasi, cukup tekan Ctrl + C di masing-masing jendela terminal.
