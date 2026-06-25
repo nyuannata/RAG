@@ -8,7 +8,7 @@ from models import TagCreate, TagResponse
 
 router = APIRouter()
 
-@router.get("/", response_model=List[TagResponse])
+@router.get("", response_model=List[TagResponse])
 def get_tags():
     db = get_db()
     if db is None:
@@ -24,7 +24,7 @@ def get_tags():
         ) for t in tags
     ]
 
-@router.post("/", response_model=TagResponse)
+@router.post("", response_model=TagResponse)
 def create_tag(tag: TagCreate):
     db = get_db()
     if db is None:

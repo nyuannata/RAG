@@ -8,7 +8,7 @@ from models import ProjectCreate, ProjectResponse, FolderCreate, FolderResponse
 
 router = APIRouter()
 
-@router.get("/", response_model=List[Dict[str, Any]])
+@router.get("", response_model=List[Dict[str, Any]])
 def get_projects_with_folders():
     db = get_db()
     if db is None:
@@ -36,7 +36,7 @@ def get_projects_with_folders():
         })
     return result
 
-@router.post("/", response_model=ProjectResponse)
+@router.post("", response_model=ProjectResponse)
 def create_project(project: ProjectCreate):
     db = get_db()
     if db is None:
