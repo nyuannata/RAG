@@ -2,7 +2,7 @@ import os
 import io
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
 from bson import ObjectId
-from typing import List
+from typing import List, Optional
 from database import get_db
 from models import DocumentResponse
 from llm import get_embedding
@@ -78,7 +78,7 @@ def process_document_background(doc_id: str, text: str, filename: str):
         db.documents.update_one({"_id": ObjectId(doc_id)}, {"$set": {"embedding_status": "failed"}})
 
 @router.post("/upload", response_model=DocumentResponse)
-async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...), folder_id: str = Form(None)):
+async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...), folder_id: Optional[str] = Form(None)):
     db = get_db()
     if db is None:
         raise HTTPException(status_code=500, detail="Database connection failed")

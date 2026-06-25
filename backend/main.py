@@ -44,6 +44,8 @@ app.include_router(tags.router, prefix="/api/tags", tags=["Tags"])
 app.include_router(auth.router, prefix="/_/backend/api/auth", tags=["auth_vercel"])
 app.include_router(documents.router, prefix="/_/backend/api/documents", tags=["documents_vercel"])
 app.include_router(chat.router, prefix="/_/backend/api/chat", tags=["chat_vercel"])
+app.include_router(projects.router, prefix="/_/backend/api/projects", tags=["projects_vercel"])
+app.include_router(tags.router, prefix="/_/backend/api/tags", tags=["tags_vercel"])
 
 @app.get("/")
 def read_root():
