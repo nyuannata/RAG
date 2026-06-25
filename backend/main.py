@@ -8,14 +8,13 @@ if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
 from fastapi import FastAPI
+from routers import auth, documents, chat, projects, tags
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Load .env
 env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 load_dotenv(env_path, override=True)
-
-from routers import documents, chat, auth
 
 app = FastAPI(title="RAG Chatbot API")
 
@@ -37,7 +36,9 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
-app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
+app.include_router(projects.router, prefix="/api/projects", tags=["Projects"])
+app.include_router(tags.router, prefix="/api/tags", tags=["Tags"])
 
 # Fallback routers for Vercel experimentalServices if routePrefix is not stripped
 app.include_router(auth.router, prefix="/_/backend/api/auth", tags=["auth_vercel"])

@@ -22,12 +22,20 @@ class Token(BaseModel):
 
 class ChatSessionCreate(BaseModel):
     title: str
+    folder_id: Optional[str] = None
+
+class ChatSessionUpdate(BaseModel):
+    title: Optional[str] = None
+    folder_id: Optional[str] = None
+    tag_ids: Optional[List[str]] = None
 
 class ChatSessionResponse(BaseModel):
     id: str
     title: str
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+    folder_id: Optional[str] = None
+    tag_ids: Optional[List[str]] = []
 
 class ChatMessageStreamRequest(BaseModel):
     message: str
@@ -47,6 +55,7 @@ class ChatMessageResponse(BaseModel):
     content: str
     created_at: str
     citations: Optional[CitationList] = None
+    is_cached: Optional[bool] = False
 
 class DocumentResponse(BaseModel):
     id: str
@@ -54,3 +63,33 @@ class DocumentResponse(BaseModel):
     file_size: int
     file_type: str
     embedding_status: str
+    created_at: str
+    folder_id: Optional[str] = None
+
+class ProjectCreate(BaseModel):
+    name: str
+
+class ProjectResponse(BaseModel):
+    id: str
+    name: str
+    created_at: str
+
+class FolderCreate(BaseModel):
+    name: str
+    project_id: str
+
+class FolderResponse(BaseModel):
+    id: str
+    project_id: str
+    name: str
+    created_at: str
+
+class TagCreate(BaseModel):
+    name: str
+    color: str
+
+class TagResponse(BaseModel):
+    id: str
+    name: str
+    color: str
+    created_at: str

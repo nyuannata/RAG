@@ -1,6 +1,6 @@
 import os
 import io
-from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
 from bson import ObjectId
 from typing import List
 from database import get_db
@@ -78,7 +78,7 @@ def process_document_background(doc_id: str, text: str, filename: str):
         db.documents.update_one({"_id": ObjectId(doc_id)}, {"$set": {"embedding_status": "failed"}})
 
 @router.post("/upload", response_model=DocumentResponse)
-async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...), folder_id: str = Form(None)):
     db = get_db()
     if db is None:
         raise HTTPException(status_code=500, detail="Database connection failed")
@@ -87,12 +87,16 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
     file_size = len(file_bytes)
     file_type = file.filename.split('.')[-1] if '.' in file.filename else "unknown"
     
+    import datetime
+    now = datetime.datetime.utcnow().isoformat()
     # Save document metadata
     doc_metadata = {
         "filename": file.filename,
         "file_size": file_size,
         "file_type": file_type,
-        "embedding_status": "pending"
+        "embedding_status": "pending",
+        "folder_id": folder_id,
+        "created_at": now
     }
     
     result = db.documents.insert_one(doc_metadata)
@@ -113,7 +117,9 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
         filename=doc_metadata["filename"],
         file_size=doc_metadata["file_size"],
         file_type=doc_metadata["file_type"],
-        embedding_status=doc_metadata["embedding_status"]
+        embedding_status=doc_metadata["embedding_status"],
+        created_at=doc_metadata["created_at"],
+        folder_id=doc_metadata["folder_id"]
     )
 
 @router.get("", response_model=List[DocumentResponse])
@@ -131,7 +137,9 @@ def get_documents():
             filename=d.get("filename", "Unknown"),
             file_size=d.get("file_size", 0),
             file_type=d.get("file_type", "unknown"),
-            embedding_status=d.get("embedding_status", "pending")
+            embedding_status=d.get("embedding_status", "pending"),
+            created_at=d.get("created_at", ""),
+            folder_id=d.get("folder_id")
         ))
     return response
 
